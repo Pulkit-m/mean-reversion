@@ -35,7 +35,7 @@ The following are some files of interest:
     ```bash
     python main.py --strategy bb --data_folder ./data/raw/outsample --plots True --opt_params ./data/opt_params.csv
     #strategy options: 'macd', 'bb' 
-    #--plots is False by default
+    #--plots is False by default. Set it to true to visualize trades on interactive plots which will open on the browser. 
     ```
 * `parameter_optimization.ipynb`: This Jupyter notebook is used to load strategies and optimize them using Grid Search Methodology. The Optimized parameters are stored in a csv file at `./data/opt_params.csv`
     * If the notebook does not open or malfunction, you can try uploading it on google colab. 

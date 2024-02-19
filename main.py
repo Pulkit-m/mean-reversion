@@ -64,6 +64,9 @@ trade_plots = args['plots']
 
 
 def runBuyAndHoldStrategy(stock_df): 
+    """
+        This function is utilized to simulate the buy and hold strategy. 
+    """
     bt = Backtest(stock_df, BuyAndHoldStrategy, cash=10_000) 
     stats = bt.run()
     profit_buy_and_hold = stats['Equity Final [$]'] - 10000 
@@ -71,6 +74,9 @@ def runBuyAndHoldStrategy(stock_df):
 
 
 def runBollingerBandsStrategy(stock_name, stock_df, opt_params = None, plot_path = None): 
+    """
+    This Function is used to Simulate the Bollinger Bands Strategy
+    """
     if opt_params is None: 
         bt = Backtest(stock_df, BollingerBandsStrategy, cash = 10_000) 
         stats = bt.run() 
@@ -97,6 +103,9 @@ def runBollingerBandsStrategy(stock_name, stock_df, opt_params = None, plot_path
 
 
 def runMACDStrategy(stock_name, stock_df, opt_params = None, plot_path = None): 
+    """
+        This function is used to simulate the MACD Strategy. 
+    """
     if opt_params is None: 
         bt = Backtest(stock_df, MACDStrategy, cash = 10_000) 
         stats = bt.run() 
@@ -120,6 +129,9 @@ def runMACDStrategy(stock_name, stock_df, opt_params = None, plot_path = None):
     
 
 def runSimpleMovingAverageStrategy(stock_name, stock_df, opt_params = None): 
+    """
+        implementation of SMA Strategy Pending. 
+    """
     pass 
 
 
@@ -177,9 +189,11 @@ if __name__ == '__main__':
         stock_df = pd.read_csv(stock_name, index_col=False)
         if(stock_df.shape[0]==0): continue
         
+        # note down the profit from buy and hold strategy
         stats_bnh, profit_bnh = runBuyAndHoldStrategy(stock_df)
         profit_buy_and_hold += profit_bnh
 
+        # simulating other input strategy
         name = stock_name.split('\\')[-1].split('.')[0].split('_')[-1]
         plot_path = f"./results/plots/{name}.html" 
         if args['strategy'] == 'bb': 
@@ -190,7 +204,7 @@ if __name__ == '__main__':
             stats_strat, profit_strat = runSimpleMovingAverageStrategy(stock_name, stock_df, opt_params_df, plot_path)
         profit_strategy += profit_strat 
 
-
+        # saving results in a dictionary
         plot_path = f"./results/plots/{stock_name}.html" 
         results['ticker'].append(name)
         results['return'].append(stats_strat['Return [%]']) 
@@ -218,6 +232,7 @@ if __name__ == '__main__':
     print(f"\n\nProfit from Simple Buy and Hold Strategy: {profit_buy_and_hold}. ") 
     print(f"Profit from {args['strategy']} strategy: {profit_strategy}")
 
+    # converting dictionary to dataframe to save as a csv. 
     pd.DataFrame(results).to_csv(f"./results/results_{args['strategy']}.csv", index = False)
     print("Results saved in Results Folder. ")
 
