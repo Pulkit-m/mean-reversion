@@ -36,24 +36,43 @@ To design a mean reversion strategy. Broad idea is to buy when the stock is over
 ### Results: 
 * Comparing total returns of all strategies: Total returns of Buy And Hold strategy were evaluated assuming that 100 shares of each stock were bought on day 1, and all sold on last day. Hence we try to beat the 500 stocks equal-weighted. 
 * For other strategies, a long position is established only when the strategy gives a signal, and the position is exit when there is an exit signal. The long positions in a single stock are exclusive, that is, one cannot enter another long position before exiting from the previous one.  
+* Unoptimized Results are the results obtained by using the following default parameters: 
+    ```JSON
+    {
+        "bb_window" : 30 ,
+        "rsi_window" : 14,
+        "rsi_smooth_window" : 3,
+        "rsi_upper_thres" : 70 ,
+        "rsi_lower_thres" : 30 ,
+        "macd_fast_ma_length" : 26 ,
+        "macd_slow_ma_length" : 12,
+        "macd_signal_ma_length" : 9
+    }
+    ```
+    * **Optimization**: Parameter Optimization was performed using [Grid Search Method](https://en.wikipedia.org/wiki/Hyperparameter_optimization#:~:text=Grid%20search%5B,other.%5B3%5D) 
+        - Above mentioned parameters were individually optimized for each stock, hence every stock had its own set of parameters. 
 
 **InSample Data**:   
 `Total Returns measured from 2022-04-01 to 2022-06-30`
 |Strategy | Buy and Hold | MACD | Bollinger Bands | 
 |---------|-----|--------|----------| 
-|Optimized| ..  | .. | .. |
 |Unoptimized| 29477.87 | 43177.0   | 45321.75|
+|Optimized| 29477.87  | 76036.0 | 35047.25 |
+- The optimization seems to perform poorly on Bollinger Bands. 
 
 **OutSample Data**:   
 `Total Returns measured from 2022-07-01 to 2022-07-31`
 |Strategy | Buy and Hold | MACD | Bollinger Bands | 
 |---------|-----|--------|----------| 
-|Optimized| ..  | .. | .. |
-|Unoptimized| .. | ..   | .. |
+|Unoptimized| -104645.58 | -10180.0   | -2186.10 |
+|Optimized| -104645.58  | -11947.0 | -2652.40 |
 
-strategy 
-optimized 
-unoptimized
+- The optimization seems to perform poorly on outsample dataset for both macd and bollinger bands, But in both the cases the losses were minimized by approximately 90%. Where the simple buy and hold strategy would have incurred a loss of around 1_00_000, our Strategies incurred only a loss of around 10_000\~11_000
+- We can see that optimizing parameters for each stock individually tends to overfit our model, and hence should be avoided. 
+
+
+The Plots Generated are saved as *html* files and can be viewd on a browser. The Charts are interactive in nature.  
+![alt text](./data/sample_plot.png)  
 
 
 ### Further optimizations: 
